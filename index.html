@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14283f">
+  <title>المساعد الشخصي</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main id="login-screen" class="login-wrap" hidden>
+    <section class="login-card">
+      <div class="brand-mark">م</div>
+      <p class="eyebrow">PERSONAL WORKSPACE</p>
+      <h1>المساعد الشخصي</h1>
+      <p class="muted">سجّل الدخول للوصول إلى لوحة التحكم الخاصة بك.</p>
+      <form id="login-form">
+        <label for="password">كلمة المرور</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required minlength="1" placeholder="أدخل كلمة مرور لوحة التحكم">
+        <button class="button primary wide" type="submit">تسجيل الدخول</button>
+        <p id="login-error" class="form-error" role="alert"></p>
+      </form>
+      <p class="fineprint">الوصول مخصص لصاحب الحساب فقط.</p>
+    </section>
+  </main>
+
+  <div id="app-screen" class="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark small">م</div><div><strong>المساعد الشخصي</strong><span>مساحة خاصة</span></div></div>
+      <nav class="nav" aria-label="التنقل الرئيسي">
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">◫</span>نظرة عامة</button>
+        <button class="nav-item" data-view="tasks"><span class="nav-icon">✓</span>المهام والتذكيرات</button>
+        <button class="nav-item" data-view="notes"><span class="nav-icon">▤</span>الملاحظات</button>
+        <button class="nav-item" data-view="links"><span class="nav-icon">↗</span>الروابط</button>
+        <button class="nav-item" data-view="finance"><span class="nav-icon">＄</span>المصروفات</button>
+        <button class="nav-item" data-view="files"><span class="nav-icon">▧</span>الملفات</button>
+      </nav>
+      <div class="sidebar-foot"><span class="status-dot"></span><span>لوحة خاصة ومحمية</span><button id="logout-button" class="logout-button">خروج</button></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar"><div><p class="eyebrow">PERSONAL DASHBOARD</p><h1 id="page-title">نظرة عامة</h1></div><div class="topbar-right"><span id="today-label" class="date-label"></span><button id="refresh-button" class="icon-button" title="تحديث البيانات" aria-label="تحديث البيانات">↻</button></div></header>
+      <div id="global-message" class="global-message" role="status" hidden></div>
+
+      <section class="view active" id="view-overview">
+        <div class="welcome-panel"><div><p class="eyebrow light">YOUR PERSONAL SPACE</p><h2>كل ما تحتاجه، في مكان واحد.</h2><p>نظّم مهامك وملاحظاتك وروابطك وملفاتك، وتابع دخلك ومصروفاتك.</p></div><div class="welcome-glyph">⌘</div></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-head"><span>مهام غير مكتملة</span><span class="stat-icon blue">✓</span></div><strong id="stat-tasks">0</strong><small>المهام المفتوحة</small></article>
+          <article class="stat-card"><div class="stat-head"><span>الملاحظات</span><span class="stat-icon purple">▤</span></div><strong id="stat-notes">0</strong><small>ملاحظة محفوظة</small></article>
+          <article class="stat-card"><div class="stat-head"><span>الرصيد الصافي</span><span class="stat-icon green">＄</span></div><strong id="stat-balance">0</strong><small id="stat-currency">—</small></article>
+          <article class="stat-card"><div class="stat-head"><span>الملفات</span><span class="stat-icon amber">▧</span></div><strong id="stat-files">0</strong><small>ملف محفوظ</small></article>
+        </div>
+        <div class="content-grid">
+          <section class="panel"><div class="panel-heading"><div><h2>المهام القادمة</h2><p>أقرب المهام غير المكتملة</p></div><button class="text-button" data-go="tasks">عرض الكل ←</button></div><div id="overview-tasks" class="list-stack"></div></section>
+          <section class="panel"><div class="panel-heading"><div><h2>ملخص مالي</h2><p>إجمالي العمليات المسجلة</p></div><button class="text-button" data-go="finance">التفاصيل ←</button></div><div class="finance-summary"><div><span>الدخل</span><strong class="positive" id="summary-income">0</strong></div><div><span>المصروفات</span><strong class="negative" id="summary-expenses">0</strong></div></div><div class="balance-strip"><span>الرصيد الصافي</span><strong id="summary-balance">0</strong></div></section>
+        </div>
+        <section class="panel quick-panel"><div class="panel-heading"><div><h2>إضافة سريعة</h2><p>احفظ شيئًا دون مغادرة هذه الصفحة.</p></div></div><div class="quick-actions"><button class="quick-action" data-quick="task"><span>＋</span><strong>مهمة جديدة</strong><small>مع تذكير اختياري</small></button><button class="quick-action" data-quick="note"><span>▤</span><strong>ملاحظة جديدة</strong><small>أفكار ومعلومات مهمة</small></button><button class="quick-action" data-quick="expense"><span>＄</span><strong>تسجيل مصروف</strong><small>تحديث الرصيد</small></button><button class="quick-action" data-quick="link"><span>↗</span><strong>حفظ رابط</strong><small>العودة إليه لاحقًا</small></button></div></section>
+      </section>
+
+      <section class="view" id="view-tasks">
+        <div class="section-intro"><div><h2>المهام والتذكيرات</h2><p>أضف موعدًا ليصل إليك تذكير عبر تيليجرام عندما يحين الوقت.</p></div></div>
+        <section class="panel"><form id="task-form" class="form-row task-form"><div class="field grow"><label for="task-title">المهمة</label><input id="task-title" name="title" maxlength="300" required placeholder="ما الذي تريد إنجازه؟"></div><div class="field"><label for="task-due">الموعد (اختياري)</label><input id="task-due" name="dueAt" type="datetime-local"></div><button class="button primary" type="submit">إضافة المهمة</button></form></section>
+        <section class="panel"><div class="panel-heading"><div><h2>قائمة المهام</h2><p>ضع علامة عند الانتهاء.</p></div><div class="filter-chips"><button class="chip active" data-task-filter="open">غير مكتملة</button><button class="chip" data-task-filter="all">الكل</button><button class="chip" data-task-filter="done">مكتملة</button></div></div><div id="tasks-list" class="list-stack"></div></section>
+      </section>
+
+      <section class="view" id="view-notes">
+        <div class="section-intro"><div><h2>الملاحظات الشخصية</h2><p>احفظ الأفكار وابحث في النصوص المحفوظة.</p></div></div>
+        <section class="panel"><form id="note-form" class="stack-form"><div class="field"><label for="note-text">نص الملاحظة</label><textarea id="note-text" rows="4" maxlength="10000" required placeholder="اكتب ملاحظتك هنا..."></textarea></div><div class="form-actions"><span class="muted">تُحفظ الملاحظات في مساحة بيانات البوت.</span><button class="button primary" type="submit">حفظ الملاحظة</button></div></form></section>
+        <section class="panel"><div class="panel-heading"><div><h2>الملاحظات المحفوظة</h2><p id="notes-count">0 ملاحظة</p></div><input id="notes-search" class="search-input" type="search" placeholder="ابحث في الملاحظات..." aria-label="البحث في الملاحظات"></div><div id="notes-list" class="note-grid"></div></section>
+      </section>
+
+      <section class="view" id="view-links">
+        <div class="section-intro"><div><h2>الروابط المحفوظة</h2><p>احتفظ بالصفحات والمراجع المهمة في قائمة واحدة.</p></div></div>
+        <section class="panel"><form id="link-form" class="form-row"><div class="field grow"><label for="link-url">الرابط</label><input id="link-url" type="url" required placeholder="https://example.com"></div><div class="field grow"><label for="link-title">العنوان</label><input id="link-title" maxlength="300" placeholder="اسم الصفحة أو وصفها"></div><button class="button primary" type="submit">حفظ الرابط</button></form></section>
+        <section class="panel"><div class="panel-heading"><div><h2>كل الروابط</h2><p>تُفتح الروابط في نافذة جديدة.</p></div></div><div id="links-list" class="list-stack"></div></section>
+      </section>
+
+      <section class="view" id="view-finance">
+        <div class="section-intro"><div><h2>إدارة المصروفات</h2><p>سجّل الدخل والمصروفات لمعرفة الرصيد الصافي.</p></div></div>
+        <div class="stats-grid finance-stats"><article class="stat-card"><div class="stat-head"><span>إجمالي الدخل</span><span class="stat-icon green">↙</span></div><strong id="finance-income">0</strong><small>كل الدخل المسجل</small></article><article class="stat-card"><div class="stat-head"><span>إجمالي المصروفات</span><span class="stat-icon amber">↗</span></div><strong id="finance-expenses">0</strong><small>كل المصروفات المسجلة</small></article><article class="stat-card"><div class="stat-head"><span>الرصيد الصافي</span><span class="stat-icon blue">＝</span></div><strong id="finance-balance">0</strong><small>الدخل ناقص المصروفات</small></article></div>
+        <section class="panel"><div class="panel-heading"><div><h2>تسجيل عملية</h2><p>أدخل المبلغ والوصف.</p></div></div><form id="transaction-form" class="form-row"><div class="field"><label for="transaction-type">نوع العملية</label><select id="transaction-type"><option value="expense">مصروف</option><option value="income">دخل</option></select></div><div class="field"><label for="transaction-amount">المبلغ</label><input id="transaction-amount" type="number" min="0.01" step="0.01" required placeholder="0.00"></div><div class="field grow"><label for="transaction-description">الوصف</label><input id="transaction-description" maxlength="300" placeholder="مثال: مواصلات، راتب..."></div><button class="button primary" type="submit">تسجيل العملية</button></form></section>
+        <section class="panel"><div class="panel-heading"><div><h2>سجل العمليات</h2><p>أحدث 100 عملية.</p></div></div><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>النوع</th><th>الوصف</th><th>المبلغ</th><th></th></tr></thead><tbody id="transactions-list"></tbody></table></div></section>
+      </section>
+
+      <section class="view" id="view-files">
+        <div class="section-intro"><div><h2>إدارة الملفات</h2><p>ارفع الملفات من هنا أو أرسلها إلى البوت في تيليجرام.</p></div></div>
+        <section class="panel"><form id="file-form" class="upload-box"><div class="upload-symbol">↑</div><div><strong>إضافة ملف إلى المساحة الخاصة</strong><p class="muted">الحد الأعلى لكل ملف: <span id="file-limit">20</span> ميغابايت. احرص على حفظ نسخة احتياطية.</p><input id="file-input" type="file" required></div><button class="button primary" type="submit">رفع الملف</button></form></section>
+        <section class="panel"><div class="panel-heading"><div><h2>الملفات المحفوظة</h2><p>تتضمن الملفات المرسلة عبر تيليجرام.</p></div></div><div id="files-list" class="file-grid"></div></section>
+      </section>
+      <footer class="app-footer"><span>المساعد الشخصي</span><span>الوقت المعتمد: <b id="timezone-label">Africa/Khartoum</b></span></footer>
+    </main>
+  </div>
+</body>
+</html>
